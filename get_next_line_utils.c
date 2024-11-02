@@ -6,7 +6,7 @@
 /*   By: julrusse <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:55:47 by julrusse          #+#    #+#             */
-/*   Updated: 2024/11/01 11:20:11 by julrusse         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:28:09 by julrusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ size_t	ft_strlen(const char *s)
 {
 	int	i;
 
+	i = 0;
 	while(s[i])
 		i++;
 	return (i);
