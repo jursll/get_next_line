@@ -1,4 +1,4 @@
-Hello world,
-This is my filedescriptor content, hope it's gonna work !
-Or not...
+hello world,
+Test ultime de get next line !
+Ça marche ou pas ???
 Goodbye.
