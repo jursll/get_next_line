@@ -6,7 +6,7 @@
 /*   By: julrusse <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:36:31 by julrusse          #+#    #+#             */
-/*   Updated: 2024/11/07 11:08:42 by julrusse         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:12:08 by julrusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static char	*buf_to_stash(int fd, char *buf)
 {
 	static char	*stash;
-	char		*temp;
 	char		*search;
 	int			stash_len;
 	ssize_t		nbytes;
@@ -25,7 +24,7 @@ static char	*buf_to_stash(int fd, char *buf)
 		stash = ft_strdup("");
 	stash_len = ft_strlen(stash);
 	stash = (char *)malloc(sizeof(char) * (ft_strlen(stash) + stash_len + 1));
-	if(!stash)
+	if (!stash)
 		return (free(stash), stash = NULL, NULL);
 	search = NULL;
 	nbytes = 1;
@@ -33,14 +32,12 @@ static char	*buf_to_stash(int fd, char *buf)
 	{
 		nbytes = read(fd, buf, BUFFER_SIZE);
 		if (nbytes < 0)
-			return(free(stash), free(buf), NULL);
-		temp = stash;
-		stash = ft_strjoin(buf, temp);
+			return (free(stash), free(buf), NULL);
+		stash = ft_strjoin(stash, buf);
 		free(buf);
-		free(temp);
 		search = ft_strchr(stash, '\n');
 		if (search)
-			break;
+			break ;
 	}
 	return (stash);
 }
