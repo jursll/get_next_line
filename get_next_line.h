@@ -6,7 +6,7 @@
 /*   By: julrusse <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:55:54 by julrusse          #+#    #+#             */
-/*   Updated: 2024/11/07 14:46:48 by julrusse         ###   ########.fr       */
+/*   Updated: 2024/11/07 23:20:45 by julrusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # include <stdlib.h>
 
 char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-int		ft_strlen(const char *s);
-char	*ft_strdup(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strchr(char *s, int c);
+size_t	ft_strlen(char *s);
+char	*ft_substr(char *s, unsigned int start, size_t len);
+char	*ft_strdup(char *s);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif

@@ -80,11 +80,11 @@ char	*get_next_line(int fd)
 	return (final_line);
 }
 
-
+/*
 #include <stdio.h>
 #include <fcntl.h> // pour open()
 
-int	main(void) // TEST POUR GET_NEXT_LINE
+int	main(void) // TEST POUR GET_NEXT_LINE - KOOO
 {
 	int		fd;
 	char	*result;
@@ -100,7 +100,7 @@ int	main(void) // TEST POUR GET_NEXT_LINE
 	return (0);
 }
 
-/*
+
 int	main(void) // TEST POUR CLEAR STASH - OK
 {
 	char *stash = ft_strdup("Hello\nDolly");
