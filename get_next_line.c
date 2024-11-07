@@ -6,29 +6,42 @@
 /*   By: julrusse <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:36:31 by julrusse          #+#    #+#             */
-/*   Updated: 2024/11/02 17:18:15 by julrusse         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:08:42 by julrusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*buf_to_stash(char *buf)
+static char	*buf_to_stash(int fd, char *buf)
 {
-	/*VOIR COMMENTAIRE DANS LA FONCTION GET_NEXT_LINE*/
 	static char	*stash;
 	char		*temp;
+	char		*search;
 	int			stash_len;
+	ssize_t		nbytes;
 
 	stash = NULL;
 	if (!stash)
 		stash = ft_strdup("");
 	stash_len = ft_strlen(stash);
-	temp = stash;
 	stash = (char *)malloc(sizeof(char) * (ft_strlen(stash) + stash_len + 1));
 	if(!stash)
 		return (free(stash), stash = NULL, NULL);
-	stash = ft_strjoin(buf, temp);
-	free(temp);
+	search = NULL;
+	nbytes = 1;
+	while (nbytes > 0)
+	{
+		nbytes = read(fd, buf, BUFFER_SIZE);
+		if (nbytes < 0)
+			return(free(stash), free(buf), NULL);
+		temp = stash;
+		stash = ft_strjoin(buf, temp);
+		free(buf);
+		free(temp);
+		search = ft_strchr(stash, '\n');
+		if (search)
+			break;
+	}
 	return (stash);
 }
 
@@ -75,26 +88,26 @@ static char	*clear_stash(char *stash)
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		*buf;
 	char		*line;
-	char		*final_line;
-	ssize_t		nbytes;
-	int			i;
+	char		*buf;
 
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (free(buf), buf = NULL, NULL);
-	nbytes = 1;
-	while (nbytes > 0)
-	{
-		/* Ici on a un pb car il nous manque une boucle pour lire et ajouter au stash
-		tant qu'il n'y a pas de '\n', on devrait pouvoir corriger ça directement dans
-		buf to stash (et ainsi gagner de la place dans get_next_line car on a déjà
-		trop de variables anyways) - GOOD LUCK YOU CAN DO IT GURL*/
-		nbytes = read(fd, buf, BUFFER_SIZE);
-		stash = buf_to_stash(buf);
-		line = line_from_stash(stash);
-	}
+	stash = buf_to_stash(fd, buf);
+	if (!stash)
+		return (NULL);
+	line = line_from_stash(stash);
+	if (!line)
+		return (free(stash), stash = NULL, NULL);
+	stash = clear_stash(stash);
+	return (line);
 }
 
 /*
