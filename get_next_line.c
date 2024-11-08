@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: julrusse <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:29:49 by julrusse          #+#    #+#             */
-/*   Updated: 2024/11/08 11:35:28 by julrusse         ###   ########.fr       */
+/*   Created: 2024/11/08 12:36:16 by julrusse          #+#    #+#             */
+/*   Updated: 2024/11/08 13:03:13 by julrusse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 static char	*read_and_stash(int fd, char *stash)
 {
-	ssize_t	nbytes;
+	int		nbytes;
 	char	*buf;
 
-	if (!stash)
-		stash = ft_strdup("");
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buf = (char *)ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buf)
 		return (NULL);
 	nbytes = 1;
@@ -29,7 +27,7 @@ static char	*read_and_stash(int fd, char *stash)
 		if (nbytes == -1)
 			return (free(stash), free(buf), NULL);
 		buf[nbytes] = '\0';
-		if (!nbytes)
+		if (nbytes == 0)
 			break ;
 		stash = ft_strjoin(stash, buf);
 		if (!stash)
@@ -61,7 +59,7 @@ static char	*clear_stash(char	*prev_stash)
 	i = 0;
 	while (prev_stash[i] && prev_stash[i] != '\n')
 		i++;
-	if (!prev_stash)
+	if (!prev_stash[i])
 		return (free(prev_stash), prev_stash = NULL, NULL);
 	new_stash = ft_substr(prev_stash, i + 1, (ft_strlen(prev_stash) - i - 1));
 	return (free(prev_stash), prev_stash = NULL, new_stash);
@@ -83,7 +81,7 @@ char	*get_next_line(int fd)
 	stash = clear_stash(stash);
 	return (line);
 }
-
+/*
 #include <fcntl.h>	// pour open
 #include <stdio.h>	// pour printf
 #include <string.h>	// pour strdup
@@ -106,3 +104,4 @@ int main(void)
     close(fd);
     return 0;
 }
+*/
